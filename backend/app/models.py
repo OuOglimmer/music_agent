@@ -57,6 +57,9 @@ class User(UserBase, table=True):
         sa_type=DateTime(timezone=True),  # type: ignore
     )
     items: list[Item] = Relationship(back_populates="owner", cascade_delete=True)
+    agent_sessions: list["AgentSession"] = Relationship(
+        back_populates="owner", cascade_delete=True
+    )
 
 
 # Properties to return via API, id is always required
@@ -109,6 +112,72 @@ class ItemPublic(ItemBase):
 
 class ItemsPublic(SQLModel):
     data: list[ItemPublic]
+    count: int
+
+
+class AgentSessionBase(SQLModel):
+    title: str = Field(default="New Chat", min_length=1, max_length=255)
+
+
+class AgentSessionCreate(AgentSessionBase):
+    pass
+
+
+class AgentSession(AgentSessionBase, table=True):
+    __tablename__ = "agent_session"
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    owner_id: uuid.UUID = Field(
+        foreign_key="user.id", nullable=False, ondelete="CASCADE", index=True
+    )
+    created_at: datetime | None = Field(
+        default_factory=get_datetime_utc,
+        sa_type=DateTime(timezone=True),
+    )
+    updated_at: datetime | None = Field(
+        default_factory=get_datetime_utc,
+        sa_type=DateTime(timezone=True),
+    )
+    owner: User | None = Relationship(back_populates="agent_sessions")
+
+
+class AgentSessionPublic(AgentSessionBase):
+    id: uuid.UUID
+    owner_id: uuid.UUID
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+
+
+class AgentSessionsPublic(SQLModel):
+    data: list[AgentSessionPublic]
+    count: int
+
+
+class AgentMessage(SQLModel, table=True):
+    __tablename__ = "agent_message"
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    session_id: uuid.UUID = Field(
+        foreign_key="agent_session.id", nullable=False, ondelete="CASCADE", index=True
+    )
+    role: str = Field(nullable=False)
+    content: str = Field(default="", nullable=False)
+    created_at: datetime | None = Field(
+        default_factory=get_datetime_utc,
+        sa_type=DateTime(timezone=True),
+    )
+
+
+class AgentMessagePublic(SQLModel):
+    id: uuid.UUID
+    session_id: uuid.UUID
+    role: str
+    content: str
+    created_at: datetime | None = None
+
+
+class AgentMessagesPublic(SQLModel):
+    data: list[AgentMessagePublic]
     count: int
 
 

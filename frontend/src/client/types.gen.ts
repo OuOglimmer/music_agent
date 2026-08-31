@@ -5,6 +5,148 @@ export type ClientOptions = {
 };
 
 /**
+ * AgentResponse
+ *
+ * Agent 响应模型。
+ */
+export type AgentResponse = {
+    /**
+     * Response
+     */
+    response: string;
+    /**
+     * Session Id
+     */
+    session_id: string;
+};
+
+/**
+ * AgentSessionCreate
+ */
+export type AgentSessionCreate = {
+    /**
+     * Title
+     */
+    title?: string;
+};
+
+/**
+ * AgentSessionPublic
+ */
+export type AgentSessionPublic = {
+    /**
+     * Title
+     */
+    title?: string;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Owner Id
+     */
+    owner_id: string;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
+};
+
+/**
+ * AgentSessionsPublic
+ */
+export type AgentSessionsPublic = {
+    /**
+     * Data
+     */
+    data: Array<AgentSessionPublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
+ * AgentMessagePublic
+ */
+export type AgentMessagePublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Session Id
+     */
+    session_id: string;
+    /**
+     * Role
+     */
+    role: string;
+    /**
+     * Content
+     */
+    content: string;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+};
+
+/**
+ * AgentMessagesPublic
+ */
+export type AgentMessagesPublic = {
+    /**
+     * Data
+     */
+    data: Array<AgentMessagePublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
+ * Body_agent-chat
+ */
+export type Body_agent_chat = {
+    /**
+     * User Input
+     */
+    user_input?: string;
+    /**
+     * Session Id
+     */
+    session_id?: string | null;
+    /**
+     * Files
+     */
+    files?: Array<Blob | File>;
+};
+
+/**
+ * Body_agent-legacy-chat
+ */
+export type Body_agent_legacy_chat = {
+    /**
+     * User Input
+     */
+    user_input?: string;
+    /**
+     * Session Id
+     */
+    session_id?: string | null;
+    /**
+     * Files
+     */
+    files?: Array<Blob | File>;
+};
+
+/**
  * Body_login-login_access_token
  */
 export type Body_login_login_access_token = {
@@ -945,3 +1087,216 @@ export type privateCreateUserResponses = {
 };
 
 export type privateCreateUserResponse = privateCreateUserResponses[keyof privateCreateUserResponses];
+
+export type agentListSessionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/sessions';
+};
+
+export type agentListSessionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentSessionsPublic;
+};
+
+export type agentListSessionsResponse = agentListSessionsResponses[keyof agentListSessionsResponses];
+
+export type agentCreateSessionData = {
+    body: AgentSessionCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/sessions';
+};
+
+export type agentCreateSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentCreateSessionError = agentCreateSessionErrors[keyof agentCreateSessionErrors];
+
+export type agentCreateSessionResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentSessionPublic;
+};
+
+export type agentCreateSessionResponse = agentCreateSessionResponses[keyof agentCreateSessionResponses];
+
+export type agentDeleteSessionData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/sessions/{session_id}';
+};
+
+export type agentDeleteSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentDeleteSessionError = agentDeleteSessionErrors[keyof agentDeleteSessionErrors];
+
+export type agentDeleteSessionResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentDeleteSessionResponse = agentDeleteSessionResponses[keyof agentDeleteSessionResponses];
+
+export type agentListSessionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/sessions/{session_id}/messages';
+};
+
+export type agentListSessionMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentMessagesPublic;
+};
+
+export type agentListSessionMessagesResponse = agentListSessionMessagesResponses[keyof agentListSessionMessagesResponses];
+
+export type agentChatData = {
+    body?: Body_agent_chat;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/chat';
+};
+
+export type agentChatErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentChatError = agentChatErrors[keyof agentChatErrors];
+
+export type agentChatResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentResponse;
+};
+
+export type agentChatResponse = agentChatResponses[keyof agentChatResponses];
+
+export type agentLegacyListSessionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/sessions';
+};
+
+export type agentLegacyListSessionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentSessionsPublic;
+};
+
+export type agentLegacyListSessionsResponse = agentLegacyListSessionsResponses[keyof agentLegacyListSessionsResponses];
+
+export type agentLegacyCreateSessionData = {
+    body: AgentSessionCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/sessions';
+};
+
+export type agentLegacyCreateSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyCreateSessionError = agentLegacyCreateSessionErrors[keyof agentLegacyCreateSessionErrors];
+
+export type agentLegacyCreateSessionResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentSessionPublic;
+};
+
+export type agentLegacyCreateSessionResponse = agentLegacyCreateSessionResponses[keyof agentLegacyCreateSessionResponses];
+
+export type agentLegacyDeleteSessionData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/sessions/{session_id}';
+};
+
+export type agentLegacyDeleteSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyDeleteSessionError = agentLegacyDeleteSessionErrors[keyof agentLegacyDeleteSessionErrors];
+
+export type agentLegacyDeleteSessionResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentLegacyDeleteSessionResponse = agentLegacyDeleteSessionResponses[keyof agentLegacyDeleteSessionResponses];
+
+export type agentLegacyChatData = {
+    body?: Body_agent_legacy_chat;
+    path?: never;
+    query?: never;
+    url: '/api/v1/chat';
+};
+
+export type agentLegacyChatErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyChatError = agentLegacyChatErrors[keyof agentLegacyChatErrors];
+
+export type agentLegacyChatResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentResponse;
+};
+
+export type agentLegacyChatResponse = agentLegacyChatResponses[keyof agentLegacyChatResponses];

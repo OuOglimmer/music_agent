@@ -20,10 +20,16 @@ client.setConfig({
 })
 
 const handleApiError = (error: Error) => {
-  if (
-    error instanceof AxiosError &&
-    [401, 403].includes(error.response?.status ?? 0)
-  ) {
+  if (!(error instanceof AxiosError)) {
+    return
+  }
+  // 404 "User not found" 表示 token 对应的用户已不存在（如数据库重置），会话无法恢复
+  const detail = (error.response?.data as { detail?: string } | undefined)
+    ?.detail
+  const sessionInvalid =
+    [401, 403].includes(error.response?.status ?? 0) ||
+    (error.response?.status === 404 && detail === "User not found")
+  if (sessionInvalid) {
     localStorage.removeItem("access_token")
     window.location.href = "/login"
   }
