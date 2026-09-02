@@ -76,15 +76,38 @@ def test_parse_servers_garbage_json() -> None:
     assert parse_servers('{"name": "wiki"}') == []  # 不是数组
 
 
-def test_load_from_config_includes_mcp42(monkeypatch) -> None:
+def test_load_from_config_includes_builtin_servers(monkeypatch) -> None:
     monkeypatch.setattr(agent_config, "mcp42_url", "https://mcp42.example/mcp")
+    monkeypatch.setattr(
+        agent_config, "audio_analyzer_command", "/opt/audio-analyzer"
+    )
     monkeypatch.setattr(
         agent_config, "mcp_servers_json", '[{"name": "wiki", "url": "http://w/mcp"}]'
     )
     registry = McpRegistry()
     registry.load_from_config()
-    names = [s["name"] for s in registry.status()]
-    assert names == ["mcp42", "wiki"]
+    entries = {s["name"]: s for s in registry.status()}
+    # 内置 mcp42（HTTP）+ audio-analyzer（stdio）+ 环境变量条目
+    assert set(entries) == {"mcp42", "audio-analyzer", "wiki"}
+    assert entries["audio-analyzer"]["transport"] == "stdio"
+    assert entries["audio-analyzer"]["command"] == "/opt/audio-analyzer"
+    assert entries["mcp42"]["transport"] == "http"
+
+
+def test_load_from_config_skips_analyzer_without_command(monkeypatch) -> None:
+    monkeypatch.setattr(agent_config, "mcp42_url", "https://mcp42.example/mcp")
+    monkeypatch.setattr(agent_config, "audio_analyzer_command", "")
+    monkeypatch.setattr(agent_config, "mcp_servers_json", "")
+    registry = McpRegistry()
+    registry.load_from_config()
+    assert [s["name"] for s in registry.status()] == ["mcp42"]
+
+
+def test_get_server_lookup() -> None:
+    registry = McpRegistry()
+    registry.register(McpServerConfig(name="mcp42", url="http://x/mcp"))
+    assert registry.get_server("mcp42") is not None
+    assert registry.get_server("ghost") is None
 
 
 # ---------------------------------------------------------------------------

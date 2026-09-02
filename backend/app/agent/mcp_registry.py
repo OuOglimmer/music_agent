@@ -140,7 +140,7 @@ class McpRegistry:
         self._tools.pop(server.name, None)
 
     def load_from_config(self) -> None:
-        """按配置重建注册表：内置 mcp42 + 环境变量里的额外 Server。"""
+        """按配置重建注册表：内置 mcp42 / audio-analyzer + 环境变量里的额外 Server。"""
         self._servers.clear()
         self._tools.clear()
         if agent_config.mcp42_url:
@@ -152,8 +152,25 @@ class McpRegistry:
                     description="乐理校正：和弦进行分析（罗马数字/终止式/调性）",
                 )
             )
+        if agent_config.audio_analyzer_command:
+            self.register(
+                McpServerConfig(
+                    name="audio-analyzer",
+                    transport="stdio",
+                    command=agent_config.audio_analyzer_command,
+                    timeout=agent_config.audio_analyzer_timeout,
+                    description=(
+                        "听觉解析：audio_info / rhythm_analysis（BPM/拍位）/ "
+                        "harmonic_analysis（调性/音级分布）"
+                    ),
+                )
+            )
         for server in parse_servers(agent_config.mcp_servers_json):
             self.register(server)
+
+    def get_server(self, name: str) -> McpServerConfig | None:
+        """按名查询注册条目（含 enabled 状态），供能力探测使用。"""
+        return self._servers.get(name)
 
     # -- 传输（测试注入点）--------------------------------------------------
 
@@ -270,6 +287,45 @@ class McpRegistry:
         if isinstance(result, str):
             return result
         return json.dumps(result, ensure_ascii=False)
+
+    async def call_many(
+        self, server_name: str, calls: list[tuple[str, dict[str, Any]]]
+    ) -> list[Any]:
+        """同一会话内连续调用多个工具：一次连接开销，多次调用。
+
+        适用 stdio 型 Server（避免每个工具各拉起一个子进程）。
+        任一调用报错即抛异常，由调用方降级。
+        """
+        server = self._servers.get(server_name)
+        if server is None or not server.enabled:
+            raise McpServerNotFoundError(
+                f"MCP server '{server_name}' is not registered/enabled"
+            )
+        tool_names = [name for name, _args in calls]
+        with traced_span("mcp.call_many", server=server_name, tools=tool_names):
+            async with asyncio.timeout(server.timeout):
+                async with self._open_session(server) as session:
+                    results = [
+                        await session.call_tool(name, args or {})
+                        for name, args in calls
+                    ]
+        metrics.incr("mcp.calls", len(calls))
+        outputs: list[Any] = []
+        for result in results:
+            if result.is_error:
+                raise RuntimeError(f"MCP tool {server_name}/{tool_names} returned error")
+            structured = getattr(result, "structured_content", None)
+            if isinstance(structured, dict):
+                outputs.append(structured)
+                continue
+            outputs.append(
+                "\n".join(
+                    str(getattr(block, "text", ""))
+                    for block in (result.content or [])
+                    if getattr(block, "text", "")
+                ).strip()
+            )
+        return outputs
 
     # -- 桥接 / 状态 --------------------------------------------------------
 

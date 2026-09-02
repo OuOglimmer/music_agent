@@ -133,6 +133,31 @@ def search_knowledge_base(query: str, session_id: str = "global") -> str:
     return retrieve_context(session_id, query)
 
 
+# ---------------------------------------------------------------------------
+# 听觉解析工具（转发本地 audio-analyzer MCP 服务，仅在其已注册时可用）
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool
+async def analyze_audio(path: str) -> str:
+    """对服务器本地的音频文件做听觉解析，返回特征 JSON。
+
+    节奏骨架（BPM/置信度/稳定性/拍数/拍位）+ 和声骨架（调性/置信度/突出音级）。
+    path 是服务器本地文件路径；audio-analyzer 未注册或解析失败时返回 error JSON。
+    """
+    import json
+
+    from app.agent.mcp_audio import analyze_audio_file
+
+    features = await analyze_audio_file(path)
+    if features is None:
+        return json.dumps(
+            {"error": "audio analyzer unavailable or parse failed"},
+            ensure_ascii=False,
+        )
+    return json.dumps(features, ensure_ascii=False)
+
+
 def build_server_info() -> dict[str, Any]:
     """返回 MCP Server 元信息（给 /agent/mcp 接口与运维排障用）。"""
     return {
@@ -148,6 +173,7 @@ def build_server_info() -> dict[str, Any]:
             "generate_drum_pattern",
             "render_midi",
             "search_knowledge_base",
+            "analyze_audio",
         ],
     }
 
