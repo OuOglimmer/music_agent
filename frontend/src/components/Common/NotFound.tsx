@@ -1,4 +1,5 @@
-import { Link } from "@tanstack/react-router"
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 
 const NotFound = () => {
@@ -20,7 +21,7 @@ const NotFound = () => {
         The page you are looking for was not found.
       </p>
       <div className="z-10">
-        <Link to="/">
+        <Link href="/">
           <Button className="mt-4">Go Back</Button>
         </Link>
       </div>

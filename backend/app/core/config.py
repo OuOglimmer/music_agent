@@ -28,6 +28,11 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
+
+    DASHSCOPE_API_KEY: str | None = None
+    OPENAI_API_KEY: str | None = None
+    OPENAI_BASE_URL: str = "https://api.openai.com/v1"
+    AGENT_MODEL_NAME: str = "qwen-turbo"
     DATABASE_URL: PostgresDsn
 
     @field_validator("DATABASE_URL", mode="before")

@@ -3,11 +3,8 @@
 set -e
 set -x
 
-# Let the DB start
+# The database itself is provisioned separately. This command waits for it,
+# applies migrations, and creates the first superuser.
 python app/backend_pre_start.py
-
-# Run migrations
 alembic upgrade head
-
-# Create initial data in DB
 python app/initial_data.py

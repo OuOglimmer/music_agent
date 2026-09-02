@@ -1,8 +1,21 @@
 .vscode/*
 !.vscode/extensions.json
 node_modules/
+
+# 环境变量（真实密钥不入库，模板见 .env.example）
+.env
+
+# 会话/工具产物
+.zcode/
 backend/app/frontend/
+backend/generated_scores/
+frontend/openapi.json
+
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# start.sh 运行时产物
+/logs/
+/.run/

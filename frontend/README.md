@@ -1,123 +1,42 @@
-# FastAPI Project - Frontend
+# 音乐创作 Agent 前端（Next.js）
 
-The frontend is built with [Vite](https://vitejs.dev/), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router), [Tailwind CSS](https://tailwindcss.com/), and [shadcn/ui](https://ui.shadcn.com/).
+基于 **Next.js 16（App Router）+ React 19 + Tailwind CSS v4 + shadcn/ui + TanStack Query** 重构的前端，
+对接 FastAPI 后端（`/api/v1`）。
 
-## Requirements
+## 页面结构
 
-- [Bun](https://bun.sh/)
+| 路由 | 说明 |
+| --- | --- |
+| `/dashboard` | 音乐创作工作台（三栏式，Suno 风格） |
+| `/chat` | 独立 AI 对话页（流式 SSE + 图片/文档附件） |
+| `/items` `/admin` `/settings` | 项目数据 / 用户管理 / 账号设置 |
+| `/login` `/signup` `/recover-password` `/reset-password` | 认证相关页面 |
 
-## Quick Start
+## 音乐工作台（三栏布局）
 
-From the project root, install the dependencies and start the frontend development server:
+- **左栏 · 项目与资源库**：项目管理（Agent 会话，选中即切换上下文）、素材上传
+  （图片 / txt / md，随下一条消息发送）、作品库（生成的乐曲，MP3 试听 / MIDI 下载）。
+- **中栏 · 创作中心**（三个标签页）：
+  - **创作**：五种风格卡片（流行 / 抒情 / 摇滚 / 电音 / 民谣，选中自动联动 BPM / 调式 / 情绪）、
+    情绪标签、调性与调式、速度 / 小节滑杆、拍号、创作备注，点击「开始创作」走多 Agent 流水线
+    （和声 → 旋律 → 贝斯 → 鼓 → 评审 → 渲染，SSE 实时进度）。
+  - **对话**：与 Agent 流式对话，支持从左栏附加素材。
+  - **歌词**：结构化歌词编辑器（`[Verse]` `[Chorus]` 等段落标签、按项目自动保存）、AI 写歌词（流式）。
+- **右栏 · 播放器**：真实音频波形（AudioContext 解码 + Canvas 渲染，可点击/拖拽跳转）、
+  播放控制（上一首 / 播放暂停 / 下一首 / 循环 / 音量）、和弦进行展示、MP3 / MIDI 下载。
+  仅 MIDI 的作品展示确定性示意波形。
 
-```bash
-bun install
-bun run dev
-```
-
-Then open <http://localhost:5173/> in your browser.
-
-Run `uv run bash scripts/prestart.sh` and `uv run fastapi dev` from the `backend` directory, with PostgreSQL running in Docker Compose. See [../development.md](../development.md) for the complete setup.
-
-To serve the frontend with FastAPI, run `bun run build` from the `frontend` directory and open `http://localhost:8000`.
-
-Check `frontend/package.json` to see the other available commands.
-
-## Removing the Frontend
-
-If you are developing an API-only app and want to remove the frontend, you can do it easily:
-
-* Remove the `./frontend` directory.
-
-* In the `backend/app/main.py` file, remove the `app.frontend()` call.
-
-* In the `backend/Dockerfile` file, remove the frontend build stage and the `COPY --from=frontend-build` instruction.
-
-* In the `compose.override.yml` file, remove the `playwright` service.
-
-* In the `.github/workflows/deploy.yml` file, remove the **Set up Bun**, **Install frontend dependencies**, and **Build frontend** steps.
-
-* In the `.fastapicloudignore` file, remove the `!backend/app/frontend/` entry.
-
-Done, you now have an API-only app. 🤓
-
-## Generate Client
-
-### Automatically
-
-* From the project root, run the script:
+## 开发
 
 ```bash
-bash ./scripts/generate-client.sh
+pnpm install
+pnpm dev        # http://localhost:3000，/api/v1 通过 next.config.ts rewrites 代理到 localhost:8000
 ```
 
-* Commit the changes.
+可选环境变量：`BACKEND_URL`（默认 http://localhost:8000）、`NEXT_PUBLIC_API_URL`（默认同源）。
 
-### Manually
+## 其他
 
-* Make sure the backend is running.
-
-* Download the OpenAPI JSON file from `http://localhost:8000/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
-
-* To generate the frontend client, run:
-
-```bash
-bun run generate-client
-```
-
-* Commit the changes.
-
-Regenerate the client whenever backend changes affect the OpenAPI schema.
-
-## Using a Remote API
-
-By default, the built frontend uses the same origin as the FastAPI app. If you want to use a remote API while running the Vite development server, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
-
-```env
-VITE_API_URL=https://my-domain.example.com
-```
-
-Then, when you run the frontend, it will use that URL as the base URL for the API.
-
-## Code Structure
-
-The frontend code is structured as follows:
-
-* `frontend/src` - The main frontend code.
-* `frontend/public` - Static assets.
-* `frontend/src/client` - The generated OpenAPI client.
-* `frontend/src/components` - The components of the frontend, including the shadcn/ui components in `frontend/src/components/ui`.
-* `frontend/src/hooks` - Custom hooks.
-* `frontend/src/lib` - Shared frontend utilities.
-* `frontend/src/routes` - The frontend routes and pages.
-
-## End-to-End Testing with Playwright
-
-The frontend includes initial end-to-end tests using Playwright. To run the tests, you need to have the Docker Compose stack running. Start the stack with the following command:
-
-```bash
-docker compose run --rm backend bash scripts/prestart.sh
-docker compose up -d --wait backend
-```
-
-Then, you can run the tests with the following command:
-
-```bash
-bunx playwright test
-```
-
-You can also run your tests in UI mode to see the browser and interact with it running:
-
-```bash
-bunx playwright test --ui
-```
-
-To stop and remove the Docker Compose stack and clean the data created in tests, use the following command:
-
-```bash
-docker compose down -v
-```
-
-To update the tests, navigate to the tests directory and modify the existing test files or add new ones as needed.
-
-For more information on writing and running Playwright tests, refer to the official [Playwright documentation](https://playwright.dev/docs/intro).
+- 重新生成 API client：`pnpm generate-client`（需后端已启动）
+- 生产构建：`pnpm build && pnpm start`（默认 <http://localhost:3000>）
+- 代码检查：`pnpm lint`

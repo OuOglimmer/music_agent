@@ -1,0 +1,116 @@
+{
+  "top_k": 4,
+  "fetch_k": 12,
+  "vector_weight": 1.0,
+  "bm25_weight": 0.5,
+  "target_recall": 0.9,
+  "last_report": {
+    "met_target": true,
+    "target_recall": 0.9,
+    "best": {
+      "top_k": 4,
+      "fetch_k": 12,
+      "vector_weight": 1.0,
+      "bm25_weight": 0.5,
+      "target_recall": 0.9,
+      "recall_at_k": 1.0,
+      "mrr": 1.0
+    },
+    "top_results": [
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 1.0,
+        "bm25_weight": 0.0,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 1.0,
+        "bm25_weight": 0.5,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 1.0,
+        "bm25_weight": 0.7,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 1.0,
+        "bm25_weight": 1.0,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.7,
+        "bm25_weight": 0.0,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.7,
+        "bm25_weight": 0.5,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.7,
+        "bm25_weight": 0.7,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.7,
+        "bm25_weight": 1.0,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.5,
+        "bm25_weight": 0.0,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      },
+      {
+        "top_k": 4,
+        "fetch_k": 12,
+        "vector_weight": 0.5,
+        "bm25_weight": 0.5,
+        "target_recall": 0.9,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    ],
+    "corpus_chunks": 3,
+    "golden_queries": 3,
+    "elapsed_ms": 562.5,
+    "generated_at": "2026-09-01T19:03:53.716028+00:00"
+  }
+}

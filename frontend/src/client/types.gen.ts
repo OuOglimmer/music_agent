@@ -5,6 +5,216 @@ export type ClientOptions = {
 };
 
 /**
+ * AgentFeedbackCreate
+ */
+export type AgentFeedbackCreate = {
+    /**
+     * Message Id
+     */
+    message_id: string;
+    /**
+     * Rating
+     */
+    rating: string;
+    /**
+     * Comment
+     */
+    comment?: string;
+};
+
+/**
+ * AgentFeedbackPublic
+ */
+export type AgentFeedbackPublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Message Id
+     */
+    message_id: string;
+    /**
+     * Rating
+     */
+    rating: string;
+    /**
+     * Comment
+     */
+    comment: string;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+};
+
+/**
+ * AgentMessagePublic
+ */
+export type AgentMessagePublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Session Id
+     */
+    session_id: string;
+    /**
+     * Role
+     */
+    role: string;
+    /**
+     * Content
+     */
+    content: string;
+    /**
+     * Intent
+     */
+    intent?: string | null;
+    /**
+     * Intent Confidence
+     */
+    intent_confidence?: number | null;
+    /**
+     * Prompt Version
+     */
+    prompt_version?: string | null;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+};
+
+/**
+ * AgentMessagesPublic
+ */
+export type AgentMessagesPublic = {
+    /**
+     * Data
+     */
+    data: Array<AgentMessagePublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
+ * AgentSessionCreate
+ */
+export type AgentSessionCreate = {
+    /**
+     * Title
+     */
+    title?: string;
+};
+
+/**
+ * AgentSessionPublic
+ */
+export type AgentSessionPublic = {
+    /**
+     * Title
+     */
+    title?: string;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Owner Id
+     */
+    owner_id: string;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
+};
+
+/**
+ * AgentSessionsPublic
+ */
+export type AgentSessionsPublic = {
+    /**
+     * Data
+     */
+    data: Array<AgentSessionPublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
+ * Body_agent-chat
+ */
+export type Body_agent_chat = {
+    /**
+     * User Input
+     */
+    user_input?: string;
+    /**
+     * Session Id
+     */
+    session_id?: string | null;
+    /**
+     * Files
+     */
+    files?: Array<Blob | File>;
+};
+
+/**
+ * Body_agent-compose
+ */
+export type Body_agent_compose = {
+    /**
+     * Request Json
+     */
+    request_json?: string;
+    /**
+     * Audio
+     */
+    audio?: Blob | File | null;
+};
+
+/**
+ * Body_agent-legacy-chat
+ */
+export type Body_agent_legacy_chat = {
+    /**
+     * User Input
+     */
+    user_input?: string;
+    /**
+     * Session Id
+     */
+    session_id?: string | null;
+    /**
+     * Files
+     */
+    files?: Array<Blob | File>;
+};
+
+/**
+ * Body_agent-legacy-compose
+ */
+export type Body_agent_legacy_compose = {
+    /**
+     * Request Json
+     */
+    request_json?: string;
+    /**
+     * Audio
+     */
+    audio?: Blob | File | null;
+};
+
+/**
  * Body_login-login_access_token
  */
 export type Body_login_login_access_token = {
@@ -35,6 +245,80 @@ export type Body_login_login_access_token = {
 };
 
 /**
+ * Body_voice-transcriptions
+ */
+export type Body_voice_transcriptions = {
+    /**
+     * Audio
+     *
+     * 录音或音频文件
+     */
+    audio: Blob | File;
+    /**
+     * Language
+     */
+    language?: string;
+};
+
+/**
+ * EvaluationRunPublic
+ */
+export type EvaluationRunPublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Sample Count
+     */
+    sample_count: number;
+    /**
+     * Average Score
+     */
+    average_score: number;
+    /**
+     * Aggregates
+     */
+    aggregates?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Results
+     */
+    results?: Array<{
+        [key: string]: unknown;
+    }>;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+};
+
+/**
+ * EvaluationRunRequest
+ */
+export type EvaluationRunRequest = {
+    /**
+     * Limit
+     */
+    limit?: number;
+};
+
+/**
+ * EvaluationRunsPublic
+ */
+export type EvaluationRunsPublic = {
+    /**
+     * Data
+     */
+    data: Array<EvaluationRunPublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
  * HTTPValidationError
  */
 export type HTTPValidationError = {
@@ -42,6 +326,46 @@ export type HTTPValidationError = {
      * Detail
      */
     detail?: Array<ValidationError>;
+};
+
+/**
+ * ImprovementNoteCreate
+ */
+export type ImprovementNoteCreate = {
+    /**
+     * Content
+     */
+    content: string;
+    /**
+     * Source
+     */
+    source?: string;
+};
+
+/**
+ * ImprovementNotePublic
+ */
+export type ImprovementNotePublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Content
+     */
+    content: string;
+    /**
+     * Source
+     */
+    source: string;
+    /**
+     * Active
+     */
+    active: boolean;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
 };
 
 /**
@@ -156,6 +480,130 @@ export type PrivateUserCreate = {
      * Is Verified
      */
     is_verified?: boolean;
+};
+
+/**
+ * ReviewCaseCreate
+ */
+export type ReviewCaseCreate = {
+    /**
+     * Session Id
+     */
+    session_id: string;
+    /**
+     * Note
+     */
+    note?: string;
+};
+
+/**
+ * ReviewCaseHandle
+ */
+export type ReviewCaseHandle = {
+    /**
+     * Action
+     */
+    action: string;
+    /**
+     * Guidance
+     */
+    guidance?: string | null;
+    /**
+     * Resolution Note
+     */
+    resolution_note?: string | null;
+};
+
+/**
+ * ReviewCasePublic
+ */
+export type ReviewCasePublic = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Session Id
+     */
+    session_id: string;
+    /**
+     * Message Id
+     */
+    message_id?: string | null;
+    /**
+     * User Id
+     */
+    user_id: string;
+    /**
+     * Source
+     */
+    source: string;
+    /**
+     * Reason
+     */
+    reason: string;
+    /**
+     * Status
+     */
+    status: string;
+    /**
+     * Intent
+     */
+    intent?: string | null;
+    /**
+     * Guidance
+     */
+    guidance: string;
+    /**
+     * Resolution Note
+     */
+    resolution_note: string;
+    /**
+     * Handled By Id
+     */
+    handled_by_id?: string | null;
+    /**
+     * Created At
+     */
+    created_at?: string | null;
+    /**
+     * Updated At
+     */
+    updated_at?: string | null;
+};
+
+/**
+ * ReviewCasesPublic
+ */
+export type ReviewCasesPublic = {
+    /**
+     * Data
+     */
+    data: Array<ReviewCasePublic>;
+    /**
+     * Count
+     */
+    count: number;
+};
+
+/**
+ * SpeechRequest
+ *
+ * TTS 请求：待朗读文本 + 可选音色/格式。
+ */
+export type SpeechRequest = {
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Voice
+     */
+    voice?: string | null;
+    /**
+     * Response Format
+     */
+    response_format?: string;
 };
 
 /**
@@ -340,6 +788,30 @@ export type ValidationError = {
     ctx?: {
         [key: string]: unknown;
     };
+};
+
+/**
+ * VoiceConfigPublic
+ *
+ * 前端录音/TTS 能力协商。
+ */
+export type VoiceConfigPublic = {
+    /**
+     * Allowed Suffixes
+     */
+    allowed_suffixes: Array<string>;
+    /**
+     * Default Voice
+     */
+    default_voice: string;
+    /**
+     * Tts Max Chars
+     */
+    tts_max_chars: number;
+    /**
+     * Max Upload Size Mb
+     */
+    max_upload_size_mb: number;
 };
 
 export type loginLoginAccessTokenData = {
@@ -921,6 +1393,94 @@ export type itemsUpdateItemResponses = {
 
 export type itemsUpdateItemResponse = itemsUpdateItemResponses[keyof itemsUpdateItemResponses];
 
+export type defaultGetMetricsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/observability/metrics';
+};
+
+export type defaultGetMetricsResponses = {
+    /**
+     * Response Default-Get Metrics
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type defaultGetMetricsResponse = defaultGetMetricsResponses[keyof defaultGetMetricsResponses];
+
+export type defaultListTracesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/observability/traces';
+};
+
+export type defaultListTracesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type defaultListTracesError = defaultListTracesErrors[keyof defaultListTracesErrors];
+
+export type defaultListTracesResponses = {
+    /**
+     * Response Default-List Traces
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type defaultListTracesResponse = defaultListTracesResponses[keyof defaultListTracesResponses];
+
+export type defaultGetTraceData = {
+    body?: never;
+    path: {
+        /**
+         * Trace Id
+         */
+        trace_id: string;
+    };
+    query?: never;
+    url: '/api/v1/observability/traces/{trace_id}';
+};
+
+export type defaultGetTraceErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type defaultGetTraceError = defaultGetTraceErrors[keyof defaultGetTraceErrors];
+
+export type defaultGetTraceResponses = {
+    /**
+     * Response Default-Get Trace
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type defaultGetTraceResponse = defaultGetTraceResponses[keyof defaultGetTraceResponses];
+
 export type privateCreateUserData = {
     body: PrivateUserCreate;
     path?: never;
@@ -945,3 +1505,1133 @@ export type privateCreateUserResponses = {
 };
 
 export type privateCreateUserResponse = privateCreateUserResponses[keyof privateCreateUserResponses];
+
+export type agentSubmitFeedbackData = {
+    body: AgentFeedbackCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/feedback';
+};
+
+export type agentSubmitFeedbackErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentSubmitFeedbackError = agentSubmitFeedbackErrors[keyof agentSubmitFeedbackErrors];
+
+export type agentSubmitFeedbackResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentFeedbackPublic;
+};
+
+export type agentSubmitFeedbackResponse = agentSubmitFeedbackResponses[keyof agentSubmitFeedbackResponses];
+
+export type agentListInterventionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Status Filter
+         */
+        status_filter?: string | null;
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/agent/interventions';
+};
+
+export type agentListInterventionsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentListInterventionsError = agentListInterventionsErrors[keyof agentListInterventionsErrors];
+
+export type agentListInterventionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasesPublic;
+};
+
+export type agentListInterventionsResponse = agentListInterventionsResponses[keyof agentListInterventionsResponses];
+
+export type agentRequestInterventionData = {
+    body: ReviewCaseCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/interventions';
+};
+
+export type agentRequestInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentRequestInterventionError = agentRequestInterventionErrors[keyof agentRequestInterventionErrors];
+
+export type agentRequestInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    201: ReviewCasePublic;
+};
+
+export type agentRequestInterventionResponse = agentRequestInterventionResponses[keyof agentRequestInterventionResponses];
+
+export type agentGetInterventionData = {
+    body?: never;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/interventions/{case_id}';
+};
+
+export type agentGetInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentGetInterventionError = agentGetInterventionErrors[keyof agentGetInterventionErrors];
+
+export type agentGetInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasePublic;
+};
+
+export type agentGetInterventionResponse = agentGetInterventionResponses[keyof agentGetInterventionResponses];
+
+export type agentGetInterventionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/interventions/{case_id}/messages';
+};
+
+export type agentGetInterventionMessagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentGetInterventionMessagesError = agentGetInterventionMessagesErrors[keyof agentGetInterventionMessagesErrors];
+
+export type agentGetInterventionMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentMessagesPublic;
+};
+
+export type agentGetInterventionMessagesResponse = agentGetInterventionMessagesResponses[keyof agentGetInterventionMessagesResponses];
+
+export type agentHandleInterventionData = {
+    body: ReviewCaseHandle;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/interventions/{case_id}/handle';
+};
+
+export type agentHandleInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentHandleInterventionError = agentHandleInterventionErrors[keyof agentHandleInterventionErrors];
+
+export type agentHandleInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasePublic;
+};
+
+export type agentHandleInterventionResponse = agentHandleInterventionResponses[keyof agentHandleInterventionResponses];
+
+export type agentListImprovementNotesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/improvement-notes';
+};
+
+export type agentListImprovementNotesResponses = {
+    /**
+     * Response Agent-List Improvement Notes
+     *
+     * Successful Response
+     */
+    200: Array<ImprovementNotePublic>;
+};
+
+export type agentListImprovementNotesResponse = agentListImprovementNotesResponses[keyof agentListImprovementNotesResponses];
+
+export type agentCreateImprovementNoteData = {
+    body: ImprovementNoteCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/improvement-notes';
+};
+
+export type agentCreateImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentCreateImprovementNoteError = agentCreateImprovementNoteErrors[keyof agentCreateImprovementNoteErrors];
+
+export type agentCreateImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    201: ImprovementNotePublic;
+};
+
+export type agentCreateImprovementNoteResponse = agentCreateImprovementNoteResponses[keyof agentCreateImprovementNoteResponses];
+
+export type agentToggleImprovementNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Note Id
+         */
+        note_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/improvement-notes/{note_id}/toggle';
+};
+
+export type agentToggleImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentToggleImprovementNoteError = agentToggleImprovementNoteErrors[keyof agentToggleImprovementNoteErrors];
+
+export type agentToggleImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    200: ImprovementNotePublic;
+};
+
+export type agentToggleImprovementNoteResponse = agentToggleImprovementNoteResponses[keyof agentToggleImprovementNoteResponses];
+
+export type agentDeleteImprovementNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Note Id
+         */
+        note_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/improvement-notes/{note_id}';
+};
+
+export type agentDeleteImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentDeleteImprovementNoteError = agentDeleteImprovementNoteErrors[keyof agentDeleteImprovementNoteErrors];
+
+export type agentDeleteImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentDeleteImprovementNoteResponse = agentDeleteImprovementNoteResponses[keyof agentDeleteImprovementNoteResponses];
+
+export type agentRunEvaluationEndpointData = {
+    body: EvaluationRunRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/evaluations/run';
+};
+
+export type agentRunEvaluationEndpointErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentRunEvaluationEndpointError = agentRunEvaluationEndpointErrors[keyof agentRunEvaluationEndpointErrors];
+
+export type agentRunEvaluationEndpointResponses = {
+    /**
+     * Response Agent-Run Evaluation Endpoint
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type agentRunEvaluationEndpointResponse = agentRunEvaluationEndpointResponses[keyof agentRunEvaluationEndpointResponses];
+
+export type agentListEvaluationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/agent/evaluations';
+};
+
+export type agentListEvaluationsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentListEvaluationsError = agentListEvaluationsErrors[keyof agentListEvaluationsErrors];
+
+export type agentListEvaluationsResponses = {
+    /**
+     * Successful Response
+     */
+    200: EvaluationRunsPublic;
+};
+
+export type agentListEvaluationsResponse = agentListEvaluationsResponses[keyof agentListEvaluationsResponses];
+
+export type agentGovernanceSummaryData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/evaluations/summary';
+};
+
+export type agentGovernanceSummaryResponses = {
+    /**
+     * Response Agent-Governance Summary
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type agentGovernanceSummaryResponse = agentGovernanceSummaryResponses[keyof agentGovernanceSummaryResponses];
+
+export type agentListSessionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/sessions';
+};
+
+export type agentListSessionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentSessionsPublic;
+};
+
+export type agentListSessionsResponse = agentListSessionsResponses[keyof agentListSessionsResponses];
+
+export type agentCreateSessionData = {
+    body: AgentSessionCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/sessions';
+};
+
+export type agentCreateSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentCreateSessionError = agentCreateSessionErrors[keyof agentCreateSessionErrors];
+
+export type agentCreateSessionResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentSessionPublic;
+};
+
+export type agentCreateSessionResponse = agentCreateSessionResponses[keyof agentCreateSessionResponses];
+
+export type agentDeleteSessionData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/sessions/{session_id}';
+};
+
+export type agentDeleteSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentDeleteSessionError = agentDeleteSessionErrors[keyof agentDeleteSessionErrors];
+
+export type agentDeleteSessionResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentDeleteSessionResponse = agentDeleteSessionResponses[keyof agentDeleteSessionResponses];
+
+export type agentListSessionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/sessions/{session_id}/messages';
+};
+
+export type agentListSessionMessagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentListSessionMessagesError = agentListSessionMessagesErrors[keyof agentListSessionMessagesErrors];
+
+export type agentListSessionMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentMessagesPublic;
+};
+
+export type agentListSessionMessagesResponse = agentListSessionMessagesResponses[keyof agentListSessionMessagesResponses];
+
+export type agentChatData = {
+    body?: Body_agent_chat;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/chat';
+};
+
+export type agentChatErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentChatError = agentChatErrors[keyof agentChatErrors];
+
+export type agentChatResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type agentComposeData = {
+    body?: Body_agent_compose;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/compose';
+};
+
+export type agentComposeErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentComposeError = agentComposeErrors[keyof agentComposeErrors];
+
+export type agentComposeResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type agentDownloadScoreData = {
+    body?: never;
+    path: {
+        /**
+         * Filename
+         */
+        filename: string;
+    };
+    query?: never;
+    url: '/api/v1/agent/scores/{filename}';
+};
+
+export type agentDownloadScoreErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentDownloadScoreError = agentDownloadScoreErrors[keyof agentDownloadScoreErrors];
+
+export type agentDownloadScoreResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type voiceVoiceConfigData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/voice/config';
+};
+
+export type voiceVoiceConfigResponses = {
+    /**
+     * Successful Response
+     */
+    200: VoiceConfigPublic;
+};
+
+export type voiceVoiceConfigResponse = voiceVoiceConfigResponses[keyof voiceVoiceConfigResponses];
+
+export type voiceTranscriptionsData = {
+    body: Body_voice_transcriptions;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/voice/transcriptions';
+};
+
+export type voiceTranscriptionsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type voiceTranscriptionsError = voiceTranscriptionsErrors[keyof voiceTranscriptionsErrors];
+
+export type voiceTranscriptionsResponses = {
+    /**
+     * Response Voice-Transcriptions
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type voiceTranscriptionsResponse = voiceTranscriptionsResponses[keyof voiceTranscriptionsResponses];
+
+export type voiceSpeechSynthesisData = {
+    body: SpeechRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/agent/voice/speech';
+};
+
+export type voiceSpeechSynthesisErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type voiceSpeechSynthesisError = voiceSpeechSynthesisErrors[keyof voiceSpeechSynthesisErrors];
+
+export type voiceSpeechSynthesisResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type agentLegacySubmitFeedbackData = {
+    body: AgentFeedbackCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/feedback';
+};
+
+export type agentLegacySubmitFeedbackErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacySubmitFeedbackError = agentLegacySubmitFeedbackErrors[keyof agentLegacySubmitFeedbackErrors];
+
+export type agentLegacySubmitFeedbackResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentFeedbackPublic;
+};
+
+export type agentLegacySubmitFeedbackResponse = agentLegacySubmitFeedbackResponses[keyof agentLegacySubmitFeedbackResponses];
+
+export type agentLegacyListInterventionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Status Filter
+         */
+        status_filter?: string | null;
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/interventions';
+};
+
+export type agentLegacyListInterventionsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyListInterventionsError = agentLegacyListInterventionsErrors[keyof agentLegacyListInterventionsErrors];
+
+export type agentLegacyListInterventionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasesPublic;
+};
+
+export type agentLegacyListInterventionsResponse = agentLegacyListInterventionsResponses[keyof agentLegacyListInterventionsResponses];
+
+export type agentLegacyRequestInterventionData = {
+    body: ReviewCaseCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/interventions';
+};
+
+export type agentLegacyRequestInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyRequestInterventionError = agentLegacyRequestInterventionErrors[keyof agentLegacyRequestInterventionErrors];
+
+export type agentLegacyRequestInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    201: ReviewCasePublic;
+};
+
+export type agentLegacyRequestInterventionResponse = agentLegacyRequestInterventionResponses[keyof agentLegacyRequestInterventionResponses];
+
+export type agentLegacyGetInterventionData = {
+    body?: never;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/interventions/{case_id}';
+};
+
+export type agentLegacyGetInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyGetInterventionError = agentLegacyGetInterventionErrors[keyof agentLegacyGetInterventionErrors];
+
+export type agentLegacyGetInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasePublic;
+};
+
+export type agentLegacyGetInterventionResponse = agentLegacyGetInterventionResponses[keyof agentLegacyGetInterventionResponses];
+
+export type agentLegacyGetInterventionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/interventions/{case_id}/messages';
+};
+
+export type agentLegacyGetInterventionMessagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyGetInterventionMessagesError = agentLegacyGetInterventionMessagesErrors[keyof agentLegacyGetInterventionMessagesErrors];
+
+export type agentLegacyGetInterventionMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentMessagesPublic;
+};
+
+export type agentLegacyGetInterventionMessagesResponse = agentLegacyGetInterventionMessagesResponses[keyof agentLegacyGetInterventionMessagesResponses];
+
+export type agentLegacyHandleInterventionData = {
+    body: ReviewCaseHandle;
+    path: {
+        /**
+         * Case Id
+         */
+        case_id: string;
+    };
+    query?: never;
+    url: '/api/v1/interventions/{case_id}/handle';
+};
+
+export type agentLegacyHandleInterventionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyHandleInterventionError = agentLegacyHandleInterventionErrors[keyof agentLegacyHandleInterventionErrors];
+
+export type agentLegacyHandleInterventionResponses = {
+    /**
+     * Successful Response
+     */
+    200: ReviewCasePublic;
+};
+
+export type agentLegacyHandleInterventionResponse = agentLegacyHandleInterventionResponses[keyof agentLegacyHandleInterventionResponses];
+
+export type agentLegacyListImprovementNotesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/improvement-notes';
+};
+
+export type agentLegacyListImprovementNotesResponses = {
+    /**
+     * Response Agent-Legacy-List Improvement Notes
+     *
+     * Successful Response
+     */
+    200: Array<ImprovementNotePublic>;
+};
+
+export type agentLegacyListImprovementNotesResponse = agentLegacyListImprovementNotesResponses[keyof agentLegacyListImprovementNotesResponses];
+
+export type agentLegacyCreateImprovementNoteData = {
+    body: ImprovementNoteCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/improvement-notes';
+};
+
+export type agentLegacyCreateImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyCreateImprovementNoteError = agentLegacyCreateImprovementNoteErrors[keyof agentLegacyCreateImprovementNoteErrors];
+
+export type agentLegacyCreateImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    201: ImprovementNotePublic;
+};
+
+export type agentLegacyCreateImprovementNoteResponse = agentLegacyCreateImprovementNoteResponses[keyof agentLegacyCreateImprovementNoteResponses];
+
+export type agentLegacyToggleImprovementNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Note Id
+         */
+        note_id: string;
+    };
+    query?: never;
+    url: '/api/v1/improvement-notes/{note_id}/toggle';
+};
+
+export type agentLegacyToggleImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyToggleImprovementNoteError = agentLegacyToggleImprovementNoteErrors[keyof agentLegacyToggleImprovementNoteErrors];
+
+export type agentLegacyToggleImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    200: ImprovementNotePublic;
+};
+
+export type agentLegacyToggleImprovementNoteResponse = agentLegacyToggleImprovementNoteResponses[keyof agentLegacyToggleImprovementNoteResponses];
+
+export type agentLegacyDeleteImprovementNoteData = {
+    body?: never;
+    path: {
+        /**
+         * Note Id
+         */
+        note_id: string;
+    };
+    query?: never;
+    url: '/api/v1/improvement-notes/{note_id}';
+};
+
+export type agentLegacyDeleteImprovementNoteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyDeleteImprovementNoteError = agentLegacyDeleteImprovementNoteErrors[keyof agentLegacyDeleteImprovementNoteErrors];
+
+export type agentLegacyDeleteImprovementNoteResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentLegacyDeleteImprovementNoteResponse = agentLegacyDeleteImprovementNoteResponses[keyof agentLegacyDeleteImprovementNoteResponses];
+
+export type agentLegacyRunEvaluationEndpointData = {
+    body: EvaluationRunRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/evaluations/run';
+};
+
+export type agentLegacyRunEvaluationEndpointErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyRunEvaluationEndpointError = agentLegacyRunEvaluationEndpointErrors[keyof agentLegacyRunEvaluationEndpointErrors];
+
+export type agentLegacyRunEvaluationEndpointResponses = {
+    /**
+     * Response Agent-Legacy-Run Evaluation Endpoint
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type agentLegacyRunEvaluationEndpointResponse = agentLegacyRunEvaluationEndpointResponses[keyof agentLegacyRunEvaluationEndpointResponses];
+
+export type agentLegacyListEvaluationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+    };
+    url: '/api/v1/evaluations';
+};
+
+export type agentLegacyListEvaluationsErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyListEvaluationsError = agentLegacyListEvaluationsErrors[keyof agentLegacyListEvaluationsErrors];
+
+export type agentLegacyListEvaluationsResponses = {
+    /**
+     * Successful Response
+     */
+    200: EvaluationRunsPublic;
+};
+
+export type agentLegacyListEvaluationsResponse = agentLegacyListEvaluationsResponses[keyof agentLegacyListEvaluationsResponses];
+
+export type agentLegacyGovernanceSummaryData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/evaluations/summary';
+};
+
+export type agentLegacyGovernanceSummaryResponses = {
+    /**
+     * Response Agent-Legacy-Governance Summary
+     *
+     * Successful Response
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type agentLegacyGovernanceSummaryResponse = agentLegacyGovernanceSummaryResponses[keyof agentLegacyGovernanceSummaryResponses];
+
+export type agentLegacyListSessionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/sessions';
+};
+
+export type agentLegacyListSessionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentSessionsPublic;
+};
+
+export type agentLegacyListSessionsResponse = agentLegacyListSessionsResponses[keyof agentLegacyListSessionsResponses];
+
+export type agentLegacyCreateSessionData = {
+    body: AgentSessionCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/sessions';
+};
+
+export type agentLegacyCreateSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyCreateSessionError = agentLegacyCreateSessionErrors[keyof agentLegacyCreateSessionErrors];
+
+export type agentLegacyCreateSessionResponses = {
+    /**
+     * Successful Response
+     */
+    201: AgentSessionPublic;
+};
+
+export type agentLegacyCreateSessionResponse = agentLegacyCreateSessionResponses[keyof agentLegacyCreateSessionResponses];
+
+export type agentLegacyDeleteSessionData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/sessions/{session_id}';
+};
+
+export type agentLegacyDeleteSessionErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyDeleteSessionError = agentLegacyDeleteSessionErrors[keyof agentLegacyDeleteSessionErrors];
+
+export type agentLegacyDeleteSessionResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type agentLegacyDeleteSessionResponse = agentLegacyDeleteSessionResponses[keyof agentLegacyDeleteSessionResponses];
+
+export type agentLegacyListSessionMessagesData = {
+    body?: never;
+    path: {
+        /**
+         * Session Id
+         */
+        session_id: string;
+    };
+    query?: never;
+    url: '/api/v1/sessions/{session_id}/messages';
+};
+
+export type agentLegacyListSessionMessagesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyListSessionMessagesError = agentLegacyListSessionMessagesErrors[keyof agentLegacyListSessionMessagesErrors];
+
+export type agentLegacyListSessionMessagesResponses = {
+    /**
+     * Successful Response
+     */
+    200: AgentMessagesPublic;
+};
+
+export type agentLegacyListSessionMessagesResponse = agentLegacyListSessionMessagesResponses[keyof agentLegacyListSessionMessagesResponses];
+
+export type agentLegacyChatData = {
+    body?: Body_agent_legacy_chat;
+    path?: never;
+    query?: never;
+    url: '/api/v1/chat';
+};
+
+export type agentLegacyChatErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyChatError = agentLegacyChatErrors[keyof agentLegacyChatErrors];
+
+export type agentLegacyChatResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type agentLegacyComposeData = {
+    body?: Body_agent_legacy_compose;
+    path?: never;
+    query?: never;
+    url: '/api/v1/compose';
+};
+
+export type agentLegacyComposeErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyComposeError = agentLegacyComposeErrors[keyof agentLegacyComposeErrors];
+
+export type agentLegacyComposeResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type agentLegacyDownloadScoreData = {
+    body?: never;
+    path: {
+        /**
+         * Filename
+         */
+        filename: string;
+    };
+    query?: never;
+    url: '/api/v1/scores/{filename}';
+};
+
+export type agentLegacyDownloadScoreErrors = {
+    /**
+     * Validation Error
+     */
+    422: HTTPValidationError;
+};
+
+export type agentLegacyDownloadScoreError = agentLegacyDownloadScoreErrors[keyof agentLegacyDownloadScoreErrors];
+
+export type agentLegacyDownloadScoreResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};

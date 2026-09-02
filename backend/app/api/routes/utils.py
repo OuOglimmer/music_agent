@@ -1,7 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic.networks import EmailStr
+from sqlalchemy.exc import SQLAlchemyError
+from sqlmodel import Session, text
 
 from app.api.deps import get_current_active_superuser
+from app.core.db import engine
 from app.models import Message
 from app.utils import generate_test_email, send_email
 
@@ -27,5 +30,13 @@ def test_email(email_to: EmailStr) -> Message:
 
 
 @router.get("/health-check/")
-async def health_check() -> bool:
+def health_check() -> bool:
+    try:
+        with Session(engine) as session:
+            session.exec(text("SELECT 1"))
+    except SQLAlchemyError as error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database is unavailable",
+        ) from error
     return True

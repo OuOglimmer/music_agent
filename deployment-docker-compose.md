@@ -1,43 +1,50 @@
-# FastAPI Project - Docker Compose Deployment
+# 项目部署(Docker Compose)
 
-You can deploy the project to your own remote server with Docker Compose. The deployment configuration includes Traefik to handle HTTPS and route incoming traffic to the application.
+可以用 Docker Compose 把项目部署到自己的远程服务器。部署配置内置
+[Traefik](https://traefik.io) 处理 HTTPS 并把流量路由到应用。
 
-## Preparation
+> **注意**:当前后端镜像中「构建前端」一步仍按旧 Vite 前端(bun)编写;前端已改为
+> Next.js,需要先调整后端 Dockerfile / 构建流程(或在服务器上单独以 `pnpm build &&
+> pnpm start` 运行前端)再使用本指南。
 
-* Have a remote server ready and available.
-* Configure DNS records pointing to the server for the application domain and any supporting service subdomains you want to expose, such as `fastapi-project.example.com` and `adminer.fastapi-project.example.com`.
-* Install and configure [Docker](https://docs.docker.com/engine/install/) on the remote server (Docker Engine, not Docker Desktop).
+## 准备
 
-## Copy the Code
+* 准备好一台可用的远程服务器。
+* 为应用域名及需要暴露的支撑服务子域名配置 DNS 解析,例如
+  `fastapi-project.example.com` 与 `adminer.fastapi-project.example.com`。
+* 在远程服务器安装并配置 [Docker](https://docs.docker.com/engine/install/)
+  (Docker Engine,不是 Docker Desktop)。
+
+## 复制代码
 
 ```bash
 rsync -av --exclude=".git/" --filter=":- .gitignore" ./ root@your-server.example.com:/root/code/app/
 ```
 
-The `--filter=":- .gitignore"` option tells `rsync` to use the same ignore rules as Git, excluding files such as the Python virtual environment.
+`--filter=":- .gitignore"` 让 rsync 复用与 Git 相同的忽略规则,排除 Python 虚拟环境等文件。
 
-## Configure the Application
+## 配置应用
 
-### Environment Variables
+### 环境变量
 
-Set the application domain, project name, and first superuser email:
+设置应用域名、项目名称与首个超级用户邮箱:
 
 ```bash
 export DOMAIN=fastapi-project.example.com
-export PROJECT_NAME="Full Stack FastAPI Project"
+export PROJECT_NAME="Music Agent"
 export FIRST_SUPERUSER=admin@example.com
 ```
 
-You can also configure these environment variables as needed:
+也可以按需配置:
 
-* `SMTP_HOST`: The SMTP server host from your email provider.
-* `SMTP_USER`: The SMTP server user.
-* `EMAILS_FROM_EMAIL`: The email account used to send emails.
-* `SENTRY_DSN`: The DSN for Sentry.
+* `SMTP_HOST`:邮件服务商的 SMTP 主机。
+* `SMTP_USER`:SMTP 用户名。
+* `EMAILS_FROM_EMAIL`:发件邮箱。
+* `SENTRY_DSN`:Sentry DSN。
 
 ### Secrets
 
-Generate and set secure values for the database password, token signing key, and first superuser password:
+生成并设置数据库密码、令牌签名密钥与首个超级用户密码:
 
 ```bash
 export POSTGRES_PASSWORD="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
@@ -45,9 +52,9 @@ export SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(32))
 export FIRST_SUPERUSER_PASSWORD="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
 ```
 
-To use an authenticated email provider, also set `SMTP_PASSWORD`.
+使用需要鉴权的邮件服务商时,同时设置 `SMTP_PASSWORD`。
 
-## Deploy
+## 部署
 
 ```bash
 cd /root/code/app/
@@ -56,43 +63,47 @@ docker compose -f compose.yml -f compose.deploy.yml run --rm backend bash script
 docker compose -f compose.yml -f compose.deploy.yml up -d
 ```
 
-The `compose.deploy.yml` file adds HTTPS and automatic certificate handling to the shared `compose.yml` configuration. Explicitly listing both files excludes the local settings from `compose.override.yml`.
+`compose.deploy.yml` 在共享的 `compose.yml` 基础上追加了 HTTPS 与自动证书处理。
+显式列出这两个文件可以排除 `compose.override.yml` 中的本地开发配置。
 
-The backend Docker image builds the frontend, so the server does not need Bun or prebuilt frontend files.
+后端 Docker 镜像会构建前端,因此服务器无需安装 bun 或预构建的前端文件
+(改用 Next.js 后需按上述提示调整)。
 
-## Deploy with GitHub Actions
+## 用 GitHub Actions 部署
 
-The included `.github/workflows/deploy-docker-compose.yml` workflow runs the deployment commands on the server when manually triggered from GitHub Actions.
+内置的 `.github/workflows/deploy-docker-compose.yml` workflow 会在 Actions 页面手动触发时,
+在服务器上执行部署命令。
 
-Use a self-hosted runner only for a repository whose contributors and workflow code you trust. GitHub recommends using self-hosted runners with private repositories because workflows execute directly on the runner machine.
+只有在你信任仓库的贡献者与 workflow 代码时才使用 self-hosted runner。
+GitHub 建议私有仓库使用 self-hosted runner,因为 workflow 会直接在 runner 机器上执行。
 
-### Configure Repository Variables and Secrets
+### 配置仓库变量与 Secrets
 
-In the repository, go to **Settings** > **Secrets and variables** > **Actions** and add these repository variables:
+在仓库中进入 **Settings** > **Secrets and variables** > **Actions**,添加以下仓库变量:
 
 * `DOMAIN`
 * `PROJECT_NAME`
 * `FIRST_SUPERUSER`
 
-To enable emails, add these optional repository variables:
+启用邮件功能时,添加以下可选仓库变量:
 
 * `SMTP_HOST`
 * `SMTP_USER`
 * `EMAILS_FROM_EMAIL`
 
-To enable Sentry, add the optional `SENTRY_DSN` repository variable.
+启用 Sentry 时,添加可选仓库变量 `SENTRY_DSN`。
 
-Add these repository secrets:
+添加以下仓库 secrets:
 
 * `POSTGRES_PASSWORD`
 * `SECRET_KEY`
 * `FIRST_SUPERUSER_PASSWORD`
 
-To use an authenticated email provider, add the optional `SMTP_PASSWORD` repository secret.
+使用需要鉴权的邮件服务商时,添加可选 secret `SMTP_PASSWORD`。
 
-### Install a Self-Hosted Runner
+### 安装 Self-Hosted Runner
 
-On the server, create a dedicated user and grant it access to Docker:
+在服务器上创建专用用户并授予 Docker 权限:
 
 ```bash
 sudo adduser github
@@ -100,9 +111,11 @@ sudo usermod -aG docker github
 sudo su - github
 ```
 
-In the GitHub repository, go to **Settings** > **Actions** > **Runners**, select **New self-hosted runner**, choose Linux, and follow the commands GitHub provides to download, configure, and register the runner. Install it in `/home/github/actions-runner`.
+在 GitHub 仓库中进入 **Settings** > **Actions** > **Runners**,选择 **New self-hosted
+runner**,选 Linux,按 GitHub 给出的命令下载、配置并注册 runner,安装到
+`/home/github/actions-runner`。
 
-After registering the runner, exit the `github` user session and install the runner as a system service:
+注册完成后,退出 `github` 用户会话,把 runner 安装为系统服务:
 
 ```bash
 exit
@@ -112,18 +125,20 @@ sudo ./svc.sh start
 sudo ./svc.sh status
 ```
 
-See GitHub's guides for [adding a self-hosted runner](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners) and [configuring the runner as a service](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/configure-the-application?platform=linux).
+参见 GitHub 指南:[添加 self-hosted runner](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners)
+与[将 runner 配置为服务](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/configure-the-application?platform=linux)。
 
-### Run the Deployment
+### 执行部署
 
-When the runner is online, open the repository's **Actions** tab, select **Deploy with Docker Compose**, and select **Run workflow**.
+runner 上线后,打开仓库 **Actions** 页签,选择 **Deploy with Docker Compose**,
+点击 **Run workflow**。
 
-## URLs
+## 地址
 
-Replace `fastapi-project.example.com` with your domain.
+把 `fastapi-project.example.com` 替换为你的域名。
 
-Application (frontend and API): `https://fastapi-project.example.com`
+应用(前端 + API):`https://fastapi-project.example.com`
 
-Interactive API docs: `https://fastapi-project.example.com/docs`
+交互式 API 文档:`https://fastapi-project.example.com/docs`
 
-Adminer: `https://adminer.fastapi-project.example.com`
+Adminer:`https://adminer.fastapi-project.example.com`

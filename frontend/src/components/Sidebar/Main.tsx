@@ -1,5 +1,6 @@
-import { Link as RouterLink, useRouterState } from "@tanstack/react-router"
 import type { LucideIcon } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import {
   SidebarGroup,
@@ -22,8 +23,7 @@ interface MainProps {
 
 export function Main({ items }: MainProps) {
   const { isMobile, setOpenMobile } = useSidebar()
-  const router = useRouterState()
-  const currentPath = router.location.pathname
+  const currentPath = usePathname() ?? ""
 
   const handleMenuClick = () => {
     if (isMobile) {
@@ -45,10 +45,10 @@ export function Main({ items }: MainProps) {
                   isActive={isActive}
                   asChild
                 >
-                  <RouterLink to={item.path} onClick={handleMenuClick}>
+                  <Link href={item.path} onClick={handleMenuClick}>
                     <item.icon />
                     <span>{item.title}</span>
-                  </RouterLink>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )

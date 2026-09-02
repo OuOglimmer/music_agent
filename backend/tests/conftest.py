@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, delete
 
+import tests.testing_env  # noqa: F401  # 副作用导入：切换到独立测试库，必须在 app.core.db 之前
 from app.core.config import settings
 from app.core.db import engine, init_db
 from app.main import app
